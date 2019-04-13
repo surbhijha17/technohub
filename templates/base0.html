@@ -1,0 +1,95 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang ="en">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0 ,shrink-to-fit=no">
+      <link rel ="stylesheet" href="{% static 'bootstrap.min.css' %}" >
+      <link rel ="stylesheet" href="{% static 'font-awesome.4.7.css' %}" >
+
+
+
+
+      <script src="{% static 'jquery.min.js' %}"></script>
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+     
+      <script src="{% static 'parallax.min.js' %}"></script>
+      <script type="text/javascript">
+        $(document).ready(function(event){
+          $(".reply-btn").click(function(event){
+              $(this).parent().next(".replied-comments").toggle();
+          });
+         }); 
+      </script>
+      <title>Article</title>
+      </head>
+   <body>
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+         <a class ="navbar-brand" href="{% url 'home'%}"><b><i>TechnoHub</b></i></a>
+       </div>
+       
+ 
+                <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li>   <a class="navbar-brand">Hello {{ request.user}} </a></li>
+                  <li><form classs="logout_link" action ="{% url 'accounts:logout' %}" method="post">
+                    {% csrf_token%}
+                    <button type ="submit" class="btn btn-default navbar-btn">Logout</button>
+                  </form>
+                  </li>
+                  <li><a href="{% url 'articles:create' %}">New article</a></li>
+                {% else %}
+                  <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                  <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
+                {% endif %}
+            
+            <li> <form class="form-inline" method="GET">
+      <input class="form-control" type="search" placeholder="Search.." name='q'>
+      <button class="btn btn-outline-sucess" id="find" type="submit"><i class="fa fa-search"></i></button>
+    </form></li></ul>
+  
+          </div>
+      </div>
+    </nav>
+
+            {% block content %}
+
+          {% endblock %}
+
+          <footer class="text-muted" border-top="1px">
+            <div class="footer-social-icons">
+      <h4 class="follow">Follow us on</h4>
+      <ul class="social-icons">
+          <li><a href="" class="social-icon"> <i class="fa fa-facebook"></i></a></li>
+          <li><a href="" class="social-icon"> <i class="fa fa-twitter"></i></a></li>
+          <li><a href="" class="social-icon"> <i class="fa fa-rss"></i></a></li>
+          <li><a href="" class="social-icon"> <i class="fa fa-youtube"></i></a></li>
+          <li><a href="" class="social-icon"> <i class="fa fa-linkedin"></i></a></li>
+          <li><a href="" class="social-icon"> <i class="fa fa-google-plus"></i></a></li>
+      </ul>
+  </div>
+        <div class="container">
+        <p align= "right">
+          <a href="#">Back to top</a>
+        </p>
+        <p>TechnoHub &copy; 2017-2018</p>
+        <p><a href="../../">Visit the homepage</a></p>
+       </div>
+          </footer>
+
+          <script src ="{% static 'bootstrap.min.js' %}"></script>
+           <script src ="{% static 'bootstrap.js' %}"></script>
+           <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+          
+  </body>
+</html>

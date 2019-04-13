@@ -1,0 +1,91 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="intro intro-single route bg-image" style="background-image: url(/static/img/overlay-bg.jpg)">
+   <div class="overlay-mf"></div>
+   <div class="intro-content display-table">
+     <div class="table-cell">
+       <div class="container">
+         <br>
+         <br>
+         <h2 class="intro-title mb-4">Blogs on Tag {{tag.name}}</h2>
+
+       </div>
+     </div>
+   </div>
+ </div>
+<main class="mt-5 pt-5">
+   <div class="container">
+
+
+     <!--Section: Cards-->
+     <section class="pt-5" style="margin-top: -60px;">
+
+       {% for post in articles %}
+
+       <hr class="mb-5">
+
+       <!--Grid row-->
+       <div class="row wow fadeIn">
+
+         <!--Grid column-->
+         <div class="col-lg-5 col-xl-4 mb-4">
+           <!--Featured image-->
+           <div class="view overlay rounded z-depth-1">
+             <img src="{{post.thumb.url}}" class="img-fluid" alt="" style="width:400px; height:200px;">
+
+               <div class="mask rgba-white-slight"></div>
+
+           </div>
+         </div>
+         <!--Grid column-->
+
+         <!--Grid column-->
+         <div class="col-lg-7 col-xl-7 ml-xl-4 mb-4">
+           <h3 class="mb-3 font-weight-bold dark-grey-text">
+             <strong>{{post.title}}</strong>
+           </h3>
+           <p class="grey-text">  {{post.body |truncatewords:20|safe }}</p>
+           <a href="{% url 'articles:details' post.slug %}" target="_blank" class="btn btn-primary btn-md">Read More
+
+             <i class="fa fa-play ml-2"></i>
+           </a>
+         </div>
+       </div>
+       
+         {% empty %}
+         <center><h1>Coming Soon....</h1></center>
+      <!--Grid column-->
+         {% endfor %}
+
+   </section>
+ </div>
+</main>
+
+
+{% if articles.has_other_pages %}
+
+<ul class="pagination justify-content-center" style="margin:20px 0">
+{% if articles.has_previous %}
+ <li class="page-item"><a class="page-link" href="?page={{ articles.previous_page_number }}">&laquo;</a></li>
+{% else %}
+ <li class="page-item disabled"><a class="page-link" tabindex="-1"><span aria-hidden="true">&laquo;</span></a></li>
+{% endif %}
+{% for i in articles.paginator.page_range %}
+ {% if users.number == i %}
+   <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+ {% else %}
+   <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+ {% endif %}
+{% endfor %}
+{% if articles.has_next %}
+ <li class="page-item"><a class="page-link" href="?page={{ articles.next_page_number }}">&raquo;</a></li>
+{% else %}
+ <li class="page-item disabled"><a class="page-link" tabindex="-1"><span aria-hidden="true">&raquo;</span></a></li>
+{% endif %}
+</ul>
+
+{% endif %}
+
+
+{% endblock %}

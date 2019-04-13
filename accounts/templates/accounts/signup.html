@@ -1,0 +1,20 @@
+
+{% extends 'base.html'%}
+
+
+
+{% block content %}
+
+    <div class="parallax-signup" data-parallax="scroll" data-z-index="1" style="background-image: url(/static/img/work-5.jpg)">
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1 class="para-signup" style="margin-top: 20px; margin-left: 45%; color:green">SIGN UP</h1>
+    <form class="site-form-signup" action="/accounts/signup/" method="post">
+        {%csrf_token%}
+      {{form}}
+      <input type="submit"value="signup">
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+
+
+{% block content %}
+
+
+<div class="row">
+  <div class="col-lg-10 col-md-10 mx-auto">
+  <section id="detail">
+    <ul class="list-inline">
+     <li class="list-inline-item"><i class="fa fa-thumbs-o-up" style="font-size:20px"></i>{{total_likes}}</li>
+      <li class ="list-inline-item"> <i class="fa fa-comment-o" style="font-size:20px"></i> {{comments.count}}</li>
+    </ul>
+  </section>
+
+
+
+{% if request.user.is_authenticated %}
+<div class="">
+  <form action="{% url 'like_post' %}" method="post">
+    {% csrf_token %}
+    {% if is_liked %}
+    <button type="submit" id="like" name="post_id" value="{{ post.id }}" class="btn  float-right">
+      <i class="fa fa-thumbs-o-down" style="font-size:20px"></i>
+      </button>
+    {% else %}
+       <button type="submit" id="like" name="post_id" value="{{ post.id }}" class="btn float-right">
+         <i class="fa fa-thumbs-o-up" style="font-size:20px"></i>
+       </button>
+    {% endif %}
+
+
+  </form>
+
+</div>
+
+
+{% endif %}
+</div>
+</div>
+
+{% endblock %}

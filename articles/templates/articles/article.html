@@ -1,0 +1,65 @@
+ {% extends 'base.html'%}
+
+{% block content %}
+<div style="margin:80px;">
+</div>
+<div class="blog">
+ <div class="container">
+ <h1 class="text-center">Blog</h1>
+ <div class="row">
+ {% for article in articles %}
+ 
+   <div class="col-md-4 col-lg-4 col-sm-12">
+    <div class="card">
+     <div class="card-img">
+      <img src="{{article.thumb.url}}" class="img-fluid">
+      <span><h4>{{article.category}}</h4></span>
+     </div>
+     <div class="card-footer">
+      <small>Posted by : {{article.author.username}}</small>
+     </div>
+     
+     <div class="card-body">
+     <h4 class="card-title"><a href="{% url 'articles:details' article.pk %}"{{article.title}}</h4>
+      <p class="card-text">
+       {{article.body |truncatewords:20|safe }}
+     </p>
+    
+    </p>
+     </div>
+     <div class="card-footer">
+      <a href="{% url 'articles:details' article.pk %}" class="card-link">Read more</a>
+     </div>
+    </div>
+   </div>
+
+
+{% endfor %}
+</div>
+</div>
+</div>
+  {% if articles.has_other_pages %}
+
+<ul class="pagination justify-content-center" style="margin:20px 0">
+{% if articles.has_previous %}
+  <li class="page-item"><a class="page-link" href="?page={{ articles.previous_page_number }}">&laquo;</a></li>
+{% else %}
+  <li class="page-item disabled"><a class="page-link" tabindex="-1">&laquo;</span></a></li>
+{% endif %}
+{% for i in articles.paginator.page_range %}
+  {% if users.number == i %}
+    <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+  {% else %}
+    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+  {% endif %}
+{% endfor %}
+{% if articles.has_next %}
+  <li class="page-item"><a class="page-link" href="?page={{ articles.next_page_number }}">&raquo;</a></li>
+{% else %}
+  <li class="page-item disabled"><a class="page-link" tabindex="-1"><span aria-hidden="true">&raquo;</span></a></li>
+{% endif %}
+</ul>
+
+{% endif %}
+
+{% endblock %}

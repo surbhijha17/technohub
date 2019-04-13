@@ -1,0 +1,150 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+
+
+<div class="my-parallax" data-parallax="scroll" data-z-index="1" data-image-src="{{articles.thumb.url}}">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+
+
+
+ 
+            <div class="post-heading">
+              <h1>{{articles.title}}</h1>
+              <span class="meta">Posted by
+                {{articles.author}}
+                on {{articles.date}}</span>
+
+
+          </div>
+        </div>
+      </div>
+    </div> 
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 mx-auto">
+      <section class="section section-light">
+        <p>
+       
+
+
+              {{articles.body| safe}}
+
+        </p>
+      </section>
+    </div>
+  </div>
+<h2>Similar posts</h2>
+{% for post in similar_posts %}
+<p>
+   <div class="article">
+                    <h2><a href="{% url 'articles:details' post.pk %}">{{.title}}</a></h2>
+                    <h3 class="post-subtitle">{{article.snippet}}</h3>
+                    <p class ="post-date">Posted by {{article.author}}
+                      on {{article.date}}
+                  category: <a href="{%url 'articles:category' post.category.pk %}">{{article.category}} </a>
+                   Tags:
+                  {% for tag in article.tags.all %}
+                  <a href="{% url 'articles:post_list_by_tag' tag.slug %}">
+                  {{ tag.name }}
+                  </a>
+                  {% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+
+                 </p>
+                  </div>
+<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+</p>
+{% empty %}
+There are no similar posts yet.
+{% endfor %}
+
+
+  {% include 'articles/like_section.html' %}
+ 
+
+
+
+  <div class="row">
+    <div class="col-lg-10 col-md-10 mx-auto">
+      <section class="comment-like">  
+        <h3 class = "site-heading" align = "left-top ">Leave a Comment</h3>
+          <hr>
+            <div class="form-group ">
+                <form class="comment"  method="POST">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    {% if request.user.is_authenticated  %}
+                      <input type="submit" value="Comment" class="btn btn-outline-success">
+                    {% else %}
+                      <input type="submit" value="Comment" class="btn btn-outline-success" disabled>
+                    {% endif %}
+                </form>
+            </div>
+      </section>
+    </div>
+  </div>
+
+ 
+  <div class="row">
+    <div class="col-lg-10 col-md-10 mx-auto">
+      <section class="section section-light">  
+
+
+
+    {% for comment in comments %}
+     
+
+      <blockquote class="blockquote">  <i class="fa fa-user"></i>  <cite title="Source Title">{{comment.user}}</cite>
+        <blockquote class="blockquote-footer"><cite title="Source Title"> <small> {{comment.content}}</small></cite>
+      <button  type="button"  id ="reply" class="reply-btn btn btn-outline-dark btn-sm" >Reply</button> |  {% if comment.replies.count <= 1 %}{{comment.replies.count}}Reply {% endif %}{% if comment.replies.count > 1 %}{{comment.replies.count}}Replies{% endif %}
+       </blockquote>
+        
+
+
+    <div class="replied-comments"  id ="reply-cmnt" style="display: none;">   
+      
+
+    <div class =" form-group ">
+      <form  class="comment" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+        {{ comment_form.as_p }}
+        {% if request.user.is_authenticated  %}
+          <input type="submit" value="Reply" class="btn btn-outline-success">
+        {% else %}
+          <input type="submit" value="Reply" class="btn btn-outline-success" disabled>
+        {% endif %}
+      </form>
+    </div>
+     <h7><b>Replies</b></h7>  
+     {% for reply in comment.replies.all %}
+    <blockquote class="blockquote">  <i class="fa fa-user"></i>  <cite title="Source Title">{{reply.user|capfirst}}</cite>
+      <blockquote class="blockquote-footer"><small><cite title="Source Title">  {{reply.content}}</cite></small> </blockquote>
+    </blockquote>
+    {% endfor %}
+  </div>
+   </blockquote>
+    {% endfor %}
+  
+    </section> 
+  </div>
+  </div>
+</div>
+
+
+
+
+<script src="/static/bootstrap.js"></script>
+
+<script src ="/static/bootstrap.min.js"></script>
+
+
+
+
+{% endblock %}
